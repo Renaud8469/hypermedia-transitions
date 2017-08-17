@@ -7,7 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "npm run lint && npm run test_coverage",
+    "test_mocha": "_mocha test --recursive",
+    "lint": "eslint index.js",
+    "test_coverage": "istanbul cover --include-all-sources -x 'test/**' --report lcov _mocha -- --recursive test && NODE_ENV=test istanbul check-coverage --statement 90 --functions 90 --lines 90 --branches 90"
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,16 @@
   "bugs": {
     "url": "https://github.com/Renaud8469/transitions_module/issues"
   },
-  "homepage": "https://github.com/Renaud8469/transitions_module#readme"
+  "homepage": "https://github.com/Renaud8469/transitions_module#readme",
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "eslint": "^4.4.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.5.0"
+  }
 }

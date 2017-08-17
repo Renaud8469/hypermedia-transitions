@@ -20,7 +20,7 @@ The state transitions you define should be objects defining the following proper
 - **authRequired** : whether or not the client needs to be authenticated to be able to trigger that transition
 - **template** : a template for what kind of data should be sent (POST or PUT methods for example) 
 
-#### Example 
+### Example 
 
 ```javascript
 {
