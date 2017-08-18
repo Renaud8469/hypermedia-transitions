@@ -41,5 +41,6 @@ The state transitions you define should be objects defining the following proper
 
 ## Featured media types
 
-... well this project is just starting so none for now but they will come ! 
+- HAL (<http://stateless.co/hal_specification.html>) [INCOMPLETE]
+- ... more to come ! 
 
