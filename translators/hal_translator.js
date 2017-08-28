@@ -1,12 +1,5 @@
 const transitions = require('../state_transitions/transitions')
 
-function fillTemplateWithParams (template, params, data) {
-  return template.replace(/\{[\w]+\}/g, function (str) {
-    let param = params[str.slice(1, str.length - 1)]
-    return param.split('.').reduce((o, i) => o[i], data)
-  })
-}
-
 function addLinks (halResponse, state, host, isAuth) {
   let newResponse = halResponse
   let possibleTransitions = transitions.getAvailableTransitions(state, isAuth)
@@ -17,7 +10,7 @@ function addLinks (halResponse, state, host, isAuth) {
     }
     if (transition.isUrlTemplate) {
       if (transitions.getTemplateParams(transition, state)) {
-        newResponse._links[transition.rel].href = host + fillTemplateWithParams(transition.href, transitions.getTemplateParams(transition, state), halResponse)
+        newResponse._links[transition.rel].href = host + transitions.fillTemplateWithParams(transition.href, transition, state, halResponse)
       } else {
         newResponse._links[transition.rel].templated = true
       }

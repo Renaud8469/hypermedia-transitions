@@ -60,10 +60,19 @@ function getTemplateParams (transition, state) {
   }
 }
 
+function fillTemplateWithParams (template, transition, state, data) {
+  let params = getTemplateParams(transition, state)
+  return template.replace(/\{[\w]+\}/g, function (str) {
+    let param = params[str.slice(1, str.length - 1)]
+    return param.split('.').reduce((o, i) => o[i], data)
+  })
+}
+
 module.exports = {
   addTransition,
   getTransitionList,
   getAvailableTransitions,
   clearTransitionList,
-  getTemplateParams
+  getTemplateParams,
+  fillTemplateWithParams
 }
