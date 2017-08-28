@@ -10,7 +10,18 @@ function addLinks (halResponse, state, host, isAuth) {
     }
     if (transition.isUrlTemplate) {
       if (transitions.getTemplateParams(transition, state)) {
-        newResponse._links[transition.rel].href = host + transitions.fillTemplateWithParams(transition.href, transition, state, halResponse)
+        if (transitions.isForEachItem(transition, state)) {
+          //
+          // Assuming the name can be found before "list"
+          let resourceName = /^\w+/.exec(state)[0]
+          for (let item of halResponse._embedded[resourceName]) {
+            item._links = {}
+            item._links[transition.rel] = {}
+            item._links[transition.rel].href = host + transitions.fillTemplateWithParams(transition.href, transition, state, item)
+          }
+        } else {
+          newResponse._links[transition.rel].href = host + transitions.fillTemplateWithParams(transition.href, transition, state, halResponse)
+        }
       } else {
         newResponse._links[transition.rel].templated = true
       }

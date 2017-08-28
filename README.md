@@ -45,6 +45,39 @@ The state transitions you define should be objects defining the following proper
 // task_id here is a data element that is included in your API response when displaying a task resource
 ```
 
+EXCEPTION : When your data is a list of resources instead of a single one, links will also be added to each element. 
+Those links can be filled with each resource's own data if needed : for this you need to add "eachItem" in the object you include in "accessibleFrom". Example : 
+
+```javascript
+{
+// ...
+  accessibleFrom: [{state: "list resources", fillTemplateWith: {id: "id"}, eachItem: true}]
+/// ...
+}
+
+// Will result in (HAL for example) : 
+
+[
+  { 
+    // ...
+    _links: {
+      resource: {
+        href: http://example.org/resources/1
+      }
+    }
+  },
+  { 
+    // ...
+    _links: {
+      resource: {
+        href: http://example.org/resources/2
+      }
+    }
+  }
+]
+  
+```
+
 ## Featured media types
 
 - HAL (<http://stateless.co/hal_specification.html>) [INCOMPLETE]

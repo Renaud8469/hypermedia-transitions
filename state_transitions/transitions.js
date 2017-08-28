@@ -68,11 +68,18 @@ function fillTemplateWithParams (template, transition, state, data) {
   })
 }
 
+function isForEachItem (transition, state) {
+  const originState = _.find(transition.accessibleFrom, isOriginState(state))
+  if (originState.eachItem) return true
+  else return false
+}
+
 module.exports = {
   addTransition,
   getTransitionList,
   getAvailableTransitions,
   clearTransitionList,
   getTemplateParams,
-  fillTemplateWithParams
+  fillTemplateWithParams,
+  isForEachItem
 }

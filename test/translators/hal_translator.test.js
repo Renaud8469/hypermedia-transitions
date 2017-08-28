@@ -176,3 +176,59 @@ describe('Complete templates in HAL response', () => {
   })
 
 })
+
+describe('Add links to embedded resources', () => {
+
+  let data = [
+  {
+    id: 1,
+    first_elem_first_key: "value1",
+    first_elem_last_key: "value2"
+  },
+  {
+    id: 2,
+    last_elem_first_key: "value3",
+    last_elem_last_key: "value4"
+  }]
+
+  let expected = [
+  {
+    id: 1,
+    first_elem_first_key: "value1",
+    first_elem_last_key: "value2",
+    _links: {
+      resource: {
+        href: "http://www.example.org/resources/1"
+      }
+    }
+  },
+  {
+    id: 2,
+    last_elem_first_key: "value3",
+    last_elem_last_key: "value4",
+    _links: {
+      resource: {
+        href: "http://www.example.org/resources/2"
+      }
+    }
+  }]
+
+  // Add transition to list before test
+  let transition_test = {
+    rel: "resource", 
+    target: "resource",
+    accessibleFrom: [{ state: "home"}, { state: "resource list", fillTemplateWith: { id: "id"}, eachItem: true}],
+    href: "/resources/{id}",
+    isUrlTemplate: true,
+    method: "get"
+  }
+
+  before(() => {
+    transitions.addTransition(transition_test)
+  })
+
+  it('Should contain resources with their own links', () => {
+    const response = hal_translator.translate(data, 'resource list', 'http://www.example.org')
+    expect(response._embedded.resource).to.be.an('array').that.deep.include.members(expected)
+  })
+})
