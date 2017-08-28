@@ -24,7 +24,7 @@ describe('Add correctly labeled transition', () => {
   let transition_test = {
     rel: "Relation", 
     target: "Resource",
-    accessibleFrom: ["somewhere"],
+    accessibleFrom: [{ state: "somewhere" }],
     href: "/resources",
     method: "get"
   }
@@ -46,14 +46,14 @@ describe('Retrieve available transitions', () => {
   let transition_test = {
     rel: "resource-list", 
     target: "resource list",
-    accessibleFrom: ["home"],
+    accessibleFrom: [{ state: "home" }],
     href: "/resources",
     method: "get"
   }
   let transition_test2 = {
     rel: "resource", 
     target: "resource",
-    accessibleFrom: ["resource list"],
+    accessibleFrom: [{ state: "resource list" }],
     href: "/resources/{id}",
     isUrlTemplate: true,
     method: "get"
@@ -61,7 +61,7 @@ describe('Retrieve available transitions', () => {
   let transition_test3 = {
     rel: "resource-delete", 
     target: "resource",
-    accessibleFrom: ["resource list"],
+    accessibleFrom: [{ state: "resource list" }],
     href: "/resources/{id}",
     isUrlTemplate: true,
     method: "delete",

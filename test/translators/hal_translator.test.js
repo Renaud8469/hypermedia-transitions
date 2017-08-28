@@ -10,7 +10,7 @@ describe('Translate data into HAL', () => {
         first_key: "first value",
         second_key: "second value"
       }
-      expect(hal_translator.translate(data, 'resource')).to.include(data)
+      expect(hal_translator.translate(data, 'resource', "http://www.example.org")).to.include(data)
     })
   })
 
@@ -25,7 +25,7 @@ describe('Translate data into HAL', () => {
         last_elem_first_key: "value3",
         last_elem_last_key: "value4"
       }]
-      const response = hal_translator.translate(data, 'resource-list')
+      const response = hal_translator.translate(data, 'resource-list', "http://www.example.org")
       expect(response._embedded.resource).to.be.an('array').that.deep.include.members(data)
     })
   })
@@ -37,7 +37,7 @@ describe('Add links to HAL Response', () => {
   let transition_test = {
     rel: "resource_list", 
     target: "resource list",
-    accessibleFrom: ["home"],
+    accessibleFrom: [{ state: "home" }],
     href: "/resources",
     method: "get"
   }
@@ -61,3 +61,118 @@ describe('Add links to HAL Response', () => {
   })
 })
 
+describe('Complete templates in HAL response', () => {
+
+  describe('No template', () => {
+    // Add transition to list before test
+    let transition_test = {
+      rel: "resource", 
+      target: "resource",
+      accessibleFrom: [{ state: "home"}],
+      href: "/resources/{id}",
+      isUrlTemplate: true,
+      method: "get"
+    }
+
+    before(() => {
+      transitions.addTransition(transition_test)
+    })
+
+    it('Should contain a link with template', () => {
+      const response = hal_translator.addLinks({}, "home", "http://www.example.org")
+      expect(response).to.deep.include({
+        _links: {
+          resource: {
+            href: "http://www.example.org/resources/{id}",
+            templated: true
+          }
+        }
+      })
+    })
+
+    after(() => {
+      transitions.clearTransitionList()
+    })
+  })
+
+  describe('Simple template', () => {
+    // Add transition to list before test
+    let transition_test = {
+      rel: "resource", 
+      target: "resource",
+      accessibleFrom: [{ state: "home", fillTemplateWith: {id: "res_id"}}],
+      href: "/resources/{id}",
+      isUrlTemplate: true,
+      method: "get"
+    }
+
+    let data = {
+      res_id: 2,
+      other_stuff: "something"
+    }
+
+    before(() => {
+      transitions.addTransition(transition_test)
+    })
+
+    it('Should contain a link without template but with the ID instead', () => {
+      const response = hal_translator.addLinks(data, "home", "http://www.example.org")
+      expect(response).to.deep.include({
+        _links: {
+          resource: {
+            href: "http://www.example.org/resources/2"
+          }
+        }
+      })
+    })
+
+    after(() => {
+      transitions.clearTransitionList()
+    })
+  })
+
+  describe('Complex template', () => {
+    // Add transition to list before test
+    let transition_test = {
+      rel: "other_resource", 
+      target: "other_resource",
+      accessibleFrom: [{ state: "home", fillTemplateWith: {
+        id: "res_id",
+        second_id: "embedded_stuff.more_embedded_stuff.id"
+      }}],
+      href: "/resources/{id}/complexity/{second_id}",
+      isUrlTemplate: true,
+      method: "get"
+    }
+
+    let data = {
+      res_id: 2,
+      other_stuff: "something",
+      embedded_stuff: {
+        more_embedded_stuff: {
+          id: 42
+        }
+      }
+    }
+
+    before(() => {
+      transitions.addTransition(transition_test)
+    })
+
+    it('Should contain a link without template but with the two IDs instead', () => {
+      const response = hal_translator.addLinks(data, "home", "http://www.example.org")
+      expect(response).to.deep.include({
+        _links: {
+          other_resource: {
+            href: "http://www.example.org/resources/2/complexity/42"
+          }
+        }
+      })
+    })
+
+    after(() => {
+      transitions.clearTransitionList()
+    })
+  })
+
+})

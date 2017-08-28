@@ -13,7 +13,7 @@ This module consists of :
 The state transitions you define should be objects defining the following properties : 
 - **rel** : the name for your transition 
 - **target** : the target state of your transition
-- **accessibleFrom** : a list of states from which your transition can be triggered
+- **accessibleFrom** : a list of objects with states from which your transition can be triggered and eventually, the data needed to fill the template.
 - **href** : the URL to trigger your transition (relative from domain name)
 - **isUrlTemplate** : whether the URL written in the previous field can be used "as is" or is a URL template that needs to be filled in 
 - **method** : the HTTP method to trigger your transition
@@ -26,7 +26,11 @@ The state transitions you define should be objects defining the following proper
 {
   "rel": "update-task",
   "target": "task",
-  "accessibleFrom": ["home", "list task"],
+  "accessibleFrom": [
+    { "state": "home" }, 
+    { "state": "list task" },
+    { "state": "task", "fillTemplateWith": "task_id" }
+  ],
   "href": "/tasks/{id}",
   "isUrlTemplate": true,
   "method": "post",
@@ -37,6 +41,8 @@ The state transitions you define should be objects defining the following proper
     "description": "string"
   }
 }
+
+// task_id here is a data element that is included in your API response when displaying a task resource
 ```
 
 ## Featured media types

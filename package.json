@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run lint && npm run test_coverage",
     "test_mocha": "_mocha test --recursive",
-    "lint": "eslint index.js",
+    "lint": "eslint index.js state_transitions translators",
     "test_coverage": "istanbul cover --include-all-sources -x 'test/**' --report lcov _mocha -- --recursive test && NODE_ENV=test istanbul check-coverage --statement 90 --functions 90 --lines 90 --branches 90"
   },
   "repository": {
