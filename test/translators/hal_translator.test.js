@@ -217,7 +217,7 @@ describe('Add links to embedded resources', () => {
   let transition_test = {
     rel: "resource", 
     target: "resource",
-    accessibleFrom: [{ state: "home"}, { state: "resource list", fillTemplateWith: { id: "id"}, eachItem: true}],
+    accessibleFrom: [{ state: "home"}, { state: "resource_list", fillTemplateWith: { id: "id"}, eachItem: true}],
     href: "/resources/{id}",
     isUrlTemplate: true,
     method: "get"
@@ -228,7 +228,7 @@ describe('Add links to embedded resources', () => {
   })
 
   it('Should contain resources with their own links', () => {
-    const response = hal_translator.translate(data, 'resource list', 'http://www.example.org')
+    const response = hal_translator.translate(data, 'resource_list', 'http://www.example.org')
     expect(response._embedded.resource).to.be.an('array').that.deep.include.members(expected)
   })
 

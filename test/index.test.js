@@ -9,4 +9,7 @@ describe('Check if all functions are here', () => {
   it('Should contain getTransitionList', () => {
     expect(transition_module.getTransitionList).to.exist
   })
+  it('Should contain halInterceptor', () => {
+    expect(transition_module.halInterceptor).to.exist
+  })
 })

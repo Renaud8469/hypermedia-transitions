@@ -23,7 +23,7 @@ function addLinks (halResponse, state, host, isAuth) {
       // If some parameters are available to fill the template, we fill it (a filled link is easier to follow than a templated one)
       if (transitions.getTemplateParams(transition, state)) {
         if (transitions.isForEachItem(transition, state)) {
-          let resourceName = /^\w+/.exec(state)[0] // Assuming the resource name is the first word from the state
+          let resourceName = /^[a-zA-Z0-9]+/.exec(state)[0] // Assuming the resource name is the first word from the state
           for (let item of halResponse._embedded[resourceName]) {
             item._links = {}
             item._links[relation] = {}
@@ -52,7 +52,7 @@ function translate (data, state, host, isAuth) {
     halResponse._embedded = {}
     let resourceName
     if (state) {
-      resourceName = /^\w+/.exec(state)[0]
+      resourceName = /^[a-zA-Z0-9]+/.exec(state)[0]
     } else {
       resourceName = 'list'
     }
