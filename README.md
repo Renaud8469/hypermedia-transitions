@@ -46,13 +46,13 @@ The state transitions you define should be objects defining the following proper
 ```
 
 EXCEPTION : When your data is a list of resources instead of a single one, links will also be added to each element. 
-Those links can be filled with each resource's own data if needed : for this you need to add "eachItem" in the object you include in "accessibleFrom". Example : 
+Those links can be filled with each resource's own data if needed : for this you need to add "eachItem" in the object you include in "accessibleFrom". Example :
 
 ```javascript
 {
 // ...
   accessibleFrom: [{state: "list resources", fillTemplateWith: {id: "id"}, eachItem: true}]
-/// ...
+// ...
 }
 
 // Will result in (HAL for example) : 
@@ -70,6 +70,38 @@ Those links can be filled with each resource's own data if needed : for this you
     // ...
     _links: {
       resource: {
+        href: http://example.org/resources/2
+      }
+    }
+  }
+]
+  
+```
+
+EXCEPTION (again) : You can specify if you want a link to be the "self" relationship, in embedded resources or not, with the "withSelfRel" attribute in the "accessibleFrom" object. Example : 
+
+```javascript
+{
+// ...
+  accessibleFrom: [{state: "list resources", fillTemplateWith: {id: "id"}, eachItem: true, withSelfRel: true}]
+// ...
+}
+
+// Will result in (HAL for example) : 
+
+[
+  { 
+    // ...
+    _links: {
+      self: {
+        href: http://example.org/resources/1
+      }
+    }
+  },
+  { 
+    // ...
+    _links: {
+      self: {
         href: http://example.org/resources/2
       }
     }

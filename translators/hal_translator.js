@@ -8,26 +8,32 @@ function addLinks (halResponse, state, host, isAuth) {
   let possibleTransitions = transitions.getAvailableTransitions(state, isAuth)
   newResponse._links = {}
   for (let transition of possibleTransitions) {
-    newResponse._links[transition.rel] = {
+    //
+    // Define the link rel
+    let relation = transition.rel
+    if (transitions.isSelfRel(transition, state)) {
+      relation = 'self'
+    }
+    newResponse._links[relation] = {
       href: host + transition.href
     }
+    //
+    // Handle URL template case
     if (transition.isUrlTemplate) {
+      // If some parameters are available to fill the template, we fill it (a filled link is easier to follow than a templated one)
       if (transitions.getTemplateParams(transition, state)) {
-        // 
-        // If some parameters are available to fill the template, we fill it (a filled link is easier to follow than a templated one)
-        // 
         if (transitions.isForEachItem(transition, state)) {
           let resourceName = /^\w+/.exec(state)[0] // Assuming the resource name is the first word from the state
           for (let item of halResponse._embedded[resourceName]) {
             item._links = {}
-            item._links[transition.rel] = {}
-            item._links[transition.rel].href = host + transitions.fillTemplateWithParams(transition, state, item)
+            item._links[relation] = {}
+            item._links[relation].href = host + transitions.fillTemplateWithParams(transition, state, item)
           }
         } else {
-          newResponse._links[transition.rel].href = host + transitions.fillTemplateWithParams(transition, state, halResponse)
+          newResponse._links[relation].href = host + transitions.fillTemplateWithParams(transition, state, halResponse)
         }
       } else {
-        newResponse._links[transition.rel].templated = true
+        newResponse._links[relation].templated = true
       }
     }
   }

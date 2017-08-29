@@ -29,8 +29,15 @@ function isForEachItem (transition, state) {
   else return false
 }
 
+function isSelfRel (transition, state) {
+  const originState = _.find(transition.accessibleFrom, isOriginState(state))
+  if (originState.withSelfRel) return true
+  else return false
+}
+
 module.exports = {
   getTemplateParams,
   fillTemplateWithParams,
-  isForEachItem
+  isForEachItem,
+  isSelfRel
 }
