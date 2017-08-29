@@ -1,4 +1,4 @@
-const transitions = require('../../state_transitions/transitions')
+const transitions = require('../../state_transitions')
 const hal_translator = require('../../translators/hal_translator')
 const chai = require('chai')
 const expect = chai.expect

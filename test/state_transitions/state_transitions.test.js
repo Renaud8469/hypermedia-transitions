@@ -1,7 +1,7 @@
 const fs = require('fs')
 const chai = require('chai')
 const expect = chai.expect
-const transitions = require('../../state_transitions/transitions')
+const transitions = require('../../state_transitions')
 
 describe('Add wrongly constructed transition', () => {
   describe('Add empty transition', () => {

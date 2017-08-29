@@ -1,4 +1,4 @@
-const transitions = require('state_transitions/transitions')
+const transitions = require('state_transitions')
 
 module.exports = {
   addTransition: transitions.addTransition,
