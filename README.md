@@ -104,7 +104,7 @@ They can have the following properties:
     // ...
     _links: {
       self: {
-        href: http://example.org/resources/1
+        href: "http://example.org/resources/1"
       }
     }
   },
@@ -112,7 +112,7 @@ They can have the following properties:
     // ...
     _links: {
       self: {
-        href: http://example.org/resources/2
+        href: "http://example.org/resources/2"
       }
     }
   }
