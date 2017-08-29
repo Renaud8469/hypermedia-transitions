@@ -50,7 +50,12 @@ function translate (data, state, host, isAuth) {
   let halResponse = {}
   if (data instanceof Array) {
     halResponse._embedded = {}
-    let resourceName = /^\w+/.exec(state)[0]
+    let resourceName
+    if (state) {
+      resourceName = /^\w+/.exec(state)[0]
+    } else {
+      resourceName = 'list'
+    }
     halResponse._embedded[resourceName] = data
   } else {
     halResponse = data

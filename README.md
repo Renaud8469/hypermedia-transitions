@@ -109,6 +109,10 @@ EXCEPTION (again) : You can specify if you want a link to be the "self" relation
 ]
   
 ```
+## Authentication
+
+To be able to display results that are only visible by authenticated users, you will have to add a req.isAuth property. If it is not set or false, the translators will consider that the user is not authenticated.
+
 
 ## Featured media types
 
