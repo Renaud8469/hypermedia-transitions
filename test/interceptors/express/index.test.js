@@ -50,7 +50,8 @@ describe('Intercepting the response', () => {
   let req = {
     originalUrl: '/resource',
     method: 'GET',
-    hostname: 'http://example.org',
+    protocol: 'http',
+    hostname: 'example.org',
     get: function (str) {
       if (str === 'Accept') {
         return 'application/vnd.hal+json'

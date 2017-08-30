@@ -20,7 +20,7 @@ function halIntercept (req, res) {
       return
     }
     let state = transitions.getState(req.originalUrl, req.method)
-    let halResponse = translators.translateToHal(data, state, req.hostname, req.isAuth) // It uses a custom req.isAuth property
+    let halResponse = translators.translateToHal(data, state, req.protocol + '://' + req.hostname, req.isAuth) // It uses a custom req.isAuth property
 
     send(JSON.stringify(halResponse))
   }

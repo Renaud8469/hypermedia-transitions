@@ -216,7 +216,7 @@ app.use(transitions.halInterceptor)
 ## Authentication
 
 To be able to display results that are only visible by authenticated users, you will have to add a req.isAuth property. If it is not set or false, the translators will consider that the user is not authenticated.
-
+> **Warning** : for this to work you must verify if your user is authenticated for EACH request and a client that requires authentication for only some actions MUST authenticate for each request. Otherwise the transitions that are "authentication-protected" won't be visible. 
 
 ## Featured media types
 

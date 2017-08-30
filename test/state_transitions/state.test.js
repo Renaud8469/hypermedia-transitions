@@ -5,12 +5,17 @@ const expect = chai.expect
 
 describe('Matching url with transition template', () => {
   let reqUrl = '/users/2/orders/47?someParam=something'
+  let slashUrl = '/users/2/orders/47/?someParam=something' 
   let easyWrongUrl = '/otherstuff'
   let hardWrongUrl = '/users/2/orders?parameters'
   let transitionUrl = '/users/{userId}/orders/{orderId}'
 
   it('Should match', () => {
     expect(state.urlMatch(reqUrl, transitionUrl)).to.be.true
+  })
+
+  it('Should match even with the ending /', () => {
+    expect(state.urlMatch(slashUrl, transitionUrl)).to.be.true
   })
 
   it('Should not match', () => {

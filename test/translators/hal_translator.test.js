@@ -223,12 +223,14 @@ describe('Add links to embedded resources', () => {
     method: "get"
   }
 
+  let response
+
   before(() => {
     transitions.addTransition(transition_test)
+    response = hal_translator.translate(data, 'resource_list', 'http://www.example.org')
   })
 
   it('Should contain resources with their own links', () => {
-    const response = hal_translator.translate(data, 'resource_list', 'http://www.example.org')
     expect(response._embedded.resource).to.be.an('array').that.deep.include.members(expected)
   })
 
@@ -320,14 +322,19 @@ describe('Add self relation', () => {
       isUrlTemplate: true,
       method: "get"
     }
+    let response
 
     before(() => {
       transitions.addTransition(transition_test)
+      response = hal_translator.translate(data, 'resource list', 'http://www.example.org')
     })
 
     it('Should contain resources with their own links', () => {
-      const response = hal_translator.translate(data, 'resource list', 'http://www.example.org')
       expect(response._embedded.resource).to.be.an('array').that.deep.include.members(expected)
+    })
+
+    it('Should have a link without "self" at root object', () => {
+      expect(response._links).to.not.have.property('self')
     })
 
     after(() => {

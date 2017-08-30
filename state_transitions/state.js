@@ -2,11 +2,19 @@ const transitions = require('./transitions')
 const _ = require('lodash')
 const url = require('url')
 
+function removeSlashEnd (str) {
+  let len = str.length
+  if (str[len - 1] === '/') return str.slice(0, -1)
+  else return str
+}
+
 function urlMatch (reqUrl, transitionUrl) {
   // The transitionUrl might be a template 
   // The reqUrl might have additionnal parameters
   let path = url.parse(reqUrl).pathname
   let convertedTransitionUrl = transitionUrl.replace(/\{\w+\}/g, '(\\w+)')
+  path = removeSlashEnd(path)
+  convertedTransitionUrl = removeSlashEnd(convertedTransitionUrl)
   let regex = new RegExp('^' + convertedTransitionUrl + '$')
   return regex.test(path)
 }

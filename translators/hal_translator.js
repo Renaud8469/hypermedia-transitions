@@ -14,8 +14,12 @@ function addLinks (halResponse, state, host, isAuth) {
     if (transitions.isSelfRel(transition, state)) {
       relation = 'self'
     }
-    newResponse._links[relation] = {
-      href: host + transition.href
+    //
+    // Don't put the link in the root object since it will be in each "data" object
+    if (!transitions.isForEachItem(transition, state)) {
+      newResponse._links[relation] = {
+        href: host + transition.href
+      }
     }
     //
     // Handle URL template case
