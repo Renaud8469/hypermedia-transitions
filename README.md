@@ -1,5 +1,7 @@
 # hypermedia-transitions
 
+[![Coverage Status](https://coveralls.io/repos/github/Renaud8469/transitions_module/badge.svg?branch=add_coveralls)](https://coveralls.io/github/Renaud8469/transitions_module?branch=add_coveralls)
+
 This repository contains a module helping you to add hypermedia support for you API. 
 
 ## Features 
