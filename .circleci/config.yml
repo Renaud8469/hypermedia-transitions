@@ -36,5 +36,8 @@ jobs:
       # run tests!
       - run: yarn test
 
+      # run coverage and send to coveralls
+      - run: npm run cover
+
 
 
