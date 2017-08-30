@@ -1,6 +1,6 @@
 # hypermedia-transitions
 
-[![Coverage Status](https://coveralls.io/repos/github/Renaud8469/transitions_module/badge.svg?branch=add_coveralls)](https://coveralls.io/github/Renaud8469/transitions_module) [![CircleCI](https://circleci.com/gh/Renaud8469/transitions_module.svg?style=shield)](https://circleci.com/gh/Renaud8469/transitions_module)
+[[![CircleCI](https://circleci.com/gh/Renaud8469/transitions_module.svg?style=shield)](https://circleci.com/gh/Renaud8469/transitions_module) ![Coverage Status](https://coveralls.io/repos/github/Renaud8469/transitions_module/badge.svg?branch=add_coveralls)](https://coveralls.io/github/Renaud8469/transitions_module)
 
 This repository contains a module helping you to add hypermedia support for you API. 
 
