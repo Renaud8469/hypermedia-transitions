@@ -1,4 +1,4 @@
-# State transitions
+# hypermedia-transitions
 
 This repository contains a module helping you to add hypermedia support for you API. 
 
