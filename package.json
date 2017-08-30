@@ -1,5 +1,5 @@
 {
-  "name": "transitions_module",
+  "name": "hypermedia-transitions",
   "version": "1.0.0",
   "description": "Module to specify state transitions and transform them into hypermedia format",
   "main": "index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Renaud8469/transitions_module.git"
+    "url": "git+https://github.com/Renaud8469/hypermedia-transitions.git"
   },
   "keywords": [
     "hateoas",
@@ -26,9 +26,9 @@
   "author": "Renaud Dahl",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Renaud8469/transitions_module/issues"
+    "url": "https://github.com/Renaud8469/hypermedia-transitions/issues"
   },
-  "homepage": "https://github.com/Renaud8469/transitions_module#readme",
+  "homepage": "https://github.com/Renaud8469/hypermedia-transitions#readme",
   "devDependencies": {
     "chai": "^4.1.1",
     "coveralls": "^2.13.1",
