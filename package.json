@@ -11,7 +11,7 @@
     "test_mocha": "_mocha test --recursive",
     "lint": "eslint index.js state_transitions translators",
     "test_coverage": "istanbul cover --include-all-sources -x 'test/**' --report lcov _mocha -- --recursive test && NODE_ENV=test istanbul check-coverage --statement 90 --functions 90 --lines 90 --branches 90",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "cover": "istanbul cover --include-all-sources -x 'test/**' ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive test -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
