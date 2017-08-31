@@ -1,8 +1,9 @@
 # hypermedia-transitions
 
-[![CircleCI](https://circleci.com/gh/Renaud8469/hypermedia-transitions.svg?style=shield)](https://circleci.com/gh/Renaud8469/hypermedia-transitions) [![Coverage Status](https://coveralls.io/repos/github/Renaud8469/hypermedia-transitions/badge.svg)](https://coveralls.io/github/Renaud8469/hypermedia-transitions)
 
-This repository contains a module helping you to add hypermedia support for you API. 
+[![npm version](https://badge.fury.io/js/hypermedia-transitions.svg)](https://badge.fury.io/js/hypermedia-transitions)     [![CircleCI](https://circleci.com/gh/Renaud8469/hypermedia-transitions.svg?style=shield)](https://circleci.com/gh/Renaud8469/hypermedia-transitions)     [![Coverage Status](https://coveralls.io/repos/github/Renaud8469/hypermedia-transitions/badge.svg)](https://coveralls.io/github/Renaud8469/hypermedia-transitions)     [![Dependency Status](https://gemnasium.com/badges/github.com/Renaud8469/hypermedia-transitions.svg)](https://gemnasium.com/github.com/Renaud8469/hypermedia-transitions)
+
+This module is designed to help you to add hypermedia support for you API. 
 
 ## Features 
 
