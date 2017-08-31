@@ -224,5 +224,6 @@ To be able to display results that are only visible by authenticated users, you 
 ## Featured media types
 
 - HAL (<http://stateless.co/hal_specification.html>)
-- ... more to come ! 
+- Siren (<https://github.com/kevinswiber/siren>)
+- ... more to come ! Don't hesitate to submit pull requests with your own translators for other hypermedia types.
 
