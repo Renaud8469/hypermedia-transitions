@@ -48,8 +48,6 @@ describe('Translate data into siren', () => {
   })
 })
 
-// Below are test duplicated from HAL translator for simplicity. Will be uncovered one at a time.
-/*
 describe('Add links to siren Response', () => {
     
   // Add transition to list before test
@@ -66,12 +64,10 @@ describe('Add links to siren Response', () => {
   })
 
   it('Should contain the available transition', () => {
-    expect(siren_translator.addLinks({}, "home", "http://www.example.org")).to.deep.include({
-      _links: {
-        resource_list: {
-          href: "http://www.example.org/resources"
-        }
-      }
+    expect(siren_translator.translate({}, "home", "http://www.example.org").actions).to.be.an('array').that.deep.include({
+      name: "resource_list",
+      method: "get",
+      href: "http://www.example.org/resources"
     })
   })
 
@@ -98,14 +94,11 @@ describe('Complete templates in siren response', () => {
     })
 
     it('Should contain a link with template', () => {
-      const response = siren_translator.addLinks({}, "home", "http://www.example.org")
-      expect(response).to.deep.include({
-        _links: {
-          resource: {
-            href: "http://www.example.org/resources/{id}",
-            templated: true
-          }
-        }
+      const response = siren_translator.translate({}, "home", "http://www.example.org")
+      expect(response.actions).to.be.an('array').that.deep.include({
+        name: "resource",
+        href: "http://www.example.org/resources/{id}",
+        method: "get"
       })
     })
 
@@ -135,13 +128,11 @@ describe('Complete templates in siren response', () => {
     })
 
     it('Should contain a link without template but with the ID instead', () => {
-      const response = siren_translator.addLinks(data, "home", "http://www.example.org")
-      expect(response).to.deep.include({
-        _links: {
-          resource: {
-            href: "http://www.example.org/resources/2"
-          }
-        }
+      const response = siren_translator.translate(data, "home", "http://www.example.org")
+      expect(response.actions).to.be.an('array').that.deep.include({
+        name: "resource",
+        href: "http://www.example.org/resources/2",
+        method: "get"
       })
     })
 
@@ -179,13 +170,11 @@ describe('Complete templates in siren response', () => {
     })
 
     it('Should contain a link without template but with the two IDs instead', () => {
-      const response = siren_translator.addLinks(data, "home", "http://www.example.org")
-      expect(response).to.deep.include({
-        _links: {
-          other_resource: {
-            href: "http://www.example.org/resources/2/complexity/42"
-          }
-        }
+      const response = siren_translator.translate(data, "home", "http://www.example.org")
+      expect(response.actions).to.be.an('array').that.deep.include({
+        name: "other_resource",
+        href: "http://www.example.org/resources/2/complexity/42",
+        method: "get"
       })
     })
 
@@ -194,6 +183,57 @@ describe('Complete templates in siren response', () => {
     })
   })
 
+})
+
+describe('When a transition has a template', () => {
+  // Add transition to list before test
+  let transition_test = {
+    rel: "resource", 
+    target: "resource",
+    accessibleFrom: [{ state: "home"}],
+    href: "/resources",
+    isUrlTemplate: true,
+    method: "post",
+    template: {
+      name: "string",
+      content: {
+        title: "string",
+        text: "string"
+      }
+    }
+  }
+
+  before(() => {
+    transitions.addTransition(transition_test)
+  })
+
+  it('Should contain a link with template', () => {
+    const response = siren_translator.translate({}, "home", "http://www.example.org")
+    expect(response.actions).to.be.an('array').that.deep.include({
+      name: "resource",
+      href: "http://www.example.org/resources",
+      method: "post",
+      fields: [
+      {
+        name: "name",
+        type: "string"
+      },{
+        name: "content",
+        type: [
+        {
+          name: "title",
+          type: "string"
+        },{
+          name: "text",
+          type: "string"
+        }]
+      }]
+    })
+  })
+
+  after(() => {
+    transitions.clearTransitionList()
+  })
 })
 
 describe('Add links to embedded resources', () => {
@@ -212,24 +252,32 @@ describe('Add links to embedded resources', () => {
 
   let expected = [
   {
-    id: 1,
-    first_elem_first_key: "value1",
-    first_elem_last_key: "value2",
-    _links: {
-      resource: {
-        href: "http://www.example.org/resources/1"
-      }
-    }
+    class: ['resource'],
+    rel: ['resource'],
+    properties: {
+      id: 1,
+      first_elem_first_key: "value1",
+      first_elem_last_key: "value2"
+    },
+    actions: [{
+      name: "resource",
+      method: "get",
+      href: "http://www.example.org/resources/1"
+    }]
   },
   {
-    id: 2,
-    last_elem_first_key: "value3",
-    last_elem_last_key: "value4",
-    _links: {
-      resource: {
-        href: "http://www.example.org/resources/2"
-      }
-    }
+    class: ['resource'],
+    rel: ['resource'],
+    properties: {
+      id: 2,
+      last_elem_first_key: "value3",
+      last_elem_last_key: "value4"
+    },
+    actions: [{
+      name: "resource",
+      method: "get",
+      href: "http://www.example.org/resources/2"
+    }]
   }]
 
   // Add transition to list before test
@@ -250,14 +298,13 @@ describe('Add links to embedded resources', () => {
   })
 
   it('Should contain resources with their own links', () => {
-    expect(response._embedded.resource).to.be.an('array').that.deep.include.members(expected)
+    expect(response.entities).to.be.an('array').that.deep.include.members(expected)
   })
 
   after(() => {
     transitions.clearTransitionList()
   })
 })
-
 
 
 describe('Add self relation', () => {
@@ -282,13 +329,10 @@ describe('Add self relation', () => {
     })
 
     it('Should contain a link without template but with the ID instead', () => {
-      const response = siren_translator.addLinks(data, "home", "http://www.example.org")
-      expect(response).to.deep.include({
-        _links: {
-          self: {
-            href: "http://www.example.org/resources/2"
-          }
-        }
+      const response = siren_translator.translate(data, "home", "http://www.example.org")
+      expect(response.links).to.be.an('array').that.deep.include({
+        rel: 'self',
+        href: "http://www.example.org/resources/2"
       })
     })
 
@@ -309,27 +353,32 @@ describe('Add self relation', () => {
       last_elem_first_key: "value3",
       last_elem_last_key: "value4"
     }]
-
     let expected = [
     {
-      id: 1,
-      first_elem_first_key: "value1",
-      first_elem_last_key: "value2",
-      _links: {
-        self: {
-          href: "http://www.example.org/resources/1"
-        }
-      }
+      class: ['resource'],
+      rel: ['resource'],
+      properties: {
+        id: 1,
+        first_elem_first_key: "value1",
+        first_elem_last_key: "value2"
+      },
+      links: [{
+        rel: "self",
+        href: "http://www.example.org/resources/1"
+      }]
     },
     {
-      id: 2,
-      last_elem_first_key: "value3",
-      last_elem_last_key: "value4",
-      _links: {
-        self: {
-          href: "http://www.example.org/resources/2"
-        }
-      }
+      class: ['resource'],
+      rel: ['resource'],
+      properties: {
+        id: 2,
+        last_elem_first_key: "value3",
+        last_elem_last_key: "value4"
+      },
+      links: [{
+        rel: "self",
+        href: "http://www.example.org/resources/2"
+      }]
     }]
 
     // Add transition to list before test
@@ -349,11 +398,11 @@ describe('Add self relation', () => {
     })
 
     it('Should contain resources with their own links', () => {
-      expect(response._embedded.resource).to.be.an('array').that.deep.include.members(expected)
+      expect(response.entities).to.be.an('array').that.deep.include.members(expected)
     })
 
     it('Should have a link without "self" at root object', () => {
-      expect(response._links).to.not.have.property('self')
+      expect(response).to.not.have.property('links')
     })
 
     after(() => {
@@ -361,4 +410,3 @@ describe('Add self relation', () => {
     })
   })
 })
-*/

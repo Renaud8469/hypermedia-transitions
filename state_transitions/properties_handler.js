@@ -35,9 +35,25 @@ function isSelfRel (transition, state) {
   else return false
 }
 
+/*
+ * Get link to display from transition (handles template case)
+ */
+function getUrl (transition, state, data) {
+  if (transition.isUrlTemplate) {
+    if (getTemplateParams(transition, state)) {
+      return { href: fillTemplateWithParams(transition, state, data) }
+    } else {
+      return { href: transition.href, isUrlTemplate: true }
+    }
+  } else {
+    return { href: transition.href }
+  }
+}
+
 module.exports = {
   getTemplateParams,
   fillTemplateWithParams,
   isForEachItem,
-  isSelfRel
+  isSelfRel,
+  getUrl
 }
