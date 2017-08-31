@@ -11,5 +11,6 @@ module.exports = {
   fillTemplateWithParams: propertiesHandler.fillTemplateWithParams,
   isForEachItem: propertiesHandler.isForEachItem,
   isSelfRel: propertiesHandler.isSelfRel,
-  getState: stateHandler.getState
+  getState: stateHandler.getState,
+  getUrl: propertiesHandler.getUrl
 }
