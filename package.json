@@ -24,7 +24,7 @@
     "siren"
   ],
   "author": "Renaud Dahl",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Renaud8469/hypermedia-transitions/issues"
   },
