@@ -12,7 +12,7 @@ function urlMatch (reqUrl, transitionUrl) {
   // The transitionUrl might be a template 
   // The reqUrl might have additionnal parameters
   let path = url.parse(reqUrl).pathname
-  let convertedTransitionUrl = transitionUrl.replace(/\{\w+\}/g, '(\\w+)')
+  let convertedTransitionUrl = transitionUrl.replace(/\{\w+\}/g, '((\\w|-)+)')
   path = removeSlashEnd(path)
   convertedTransitionUrl = removeSlashEnd(convertedTransitionUrl)
   let regex = new RegExp('^' + convertedTransitionUrl + '$')

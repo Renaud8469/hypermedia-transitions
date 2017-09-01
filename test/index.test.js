@@ -21,4 +21,7 @@ describe('Check if all functions are here', () => {
   it('Should contain sirenInterceptor', () => {
     expect(transition_module.sirenInterceptor).to.exist
   })
+  it('Should contain hapiRegister', () => {
+    expect(transition_module.sirenInterceptor).to.exist
+  })
 })
