@@ -1,5 +1,5 @@
 const interceptor = require('express-interceptor')
-const translators  = require('../../translators')
+const translators = require('../../translators')
 const transitions = require('../../state_transitions')
 
 function isHalInterceptable (req) {
@@ -17,11 +17,11 @@ function isSirenInterceptable (req) {
 /*
  * General interception function 
  */
-function generalInterception(mediaType, translateFunc) {
+function generalInterception (mediaType, translateFunc) {
   return function (req, res) {
     return function (body, send) {
       res.set('Content-type', mediaType)
-    
+
       let data
       try {
         data = JSON.parse(body)
@@ -43,14 +43,14 @@ const sirenIntercept = generalInterception('application/vnd.siren+json', transla
 
 function setupHalInterceptor (req, res) {
   return {
-    isInterceptable : isHalInterceptable(req),
+    isInterceptable: isHalInterceptable(req),
     intercept: halIntercept(req, res)
   }
 }
 
 function setupHalDefaultInterceptor (req, res) {
   return {
-    isInterceptable : () => true,
+    isInterceptable: () => true,
     intercept: halIntercept(req, res)
   }
 }
@@ -64,7 +64,7 @@ function setupSirenInterceptor (req, res) {
 
 function setupSirenDefaultInterceptor (req, res) {
   return {
-    isInterceptable : () => true,
+    isInterceptable: () => true,
     intercept: sirenIntercept(req, res)
   }
 }
