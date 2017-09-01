@@ -44,7 +44,14 @@ const sirenIntercept = generalInterception('application/vnd.siren+json', transla
 function setupHalInterceptor (req, res) {
   return {
     isInterceptable : isHalInterceptable(req),
-    intercept: halIntercept (req, res)
+    intercept: halIntercept(req, res)
+  }
+}
+
+function setupHalDefaultInterceptor (req, res) {
+  return {
+    isInterceptable : () => true,
+    intercept: halIntercept(req, res)
   }
 }
 
@@ -55,16 +62,29 @@ function setupSirenInterceptor (req, res) {
   }
 }
 
+function setupSirenDefaultInterceptor (req, res) {
+  return {
+    isInterceptable : () => true,
+    intercept: sirenIntercept(req, res)
+  }
+}
+
 const halInterceptor = interceptor(setupHalInterceptor)
+const halDefaultInterceptor = interceptor(setupHalDefaultInterceptor)
 const sirenInterceptor = interceptor(setupSirenInterceptor)
+const sirenDefaultInterceptor = interceptor(setupSirenDefaultInterceptor)
 
 module.exports = {
   isHalInterceptable,
   halIntercept,
   setupHalInterceptor,
+  setupHalDefaultInterceptor,
   isSirenInterceptable,
   sirenIntercept,
   setupSirenInterceptor,
+  setupSirenDefaultInterceptor,
   halInterceptor,
-  sirenInterceptor
+  halDefaultInterceptor,
+  sirenInterceptor,
+  sirenDefaultInterceptor
 }

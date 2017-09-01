@@ -5,5 +5,7 @@ module.exports = {
   addTransition: transitions.addTransition,
   getTransitionList: transitions.getTransitionList,
   halInterceptor: expressInterceptors.halInterceptor,
-  sirenInterceptor: expressInterceptors.sirenInterceptor
+  halDefaultInterceptor: expressInterceptors.halDefaultInterceptor,
+  sirenInterceptor: expressInterceptors.sirenInterceptor,
+  sirenDefaultInterceptor: expressInterceptors.sirenDefaultInterceptor
 }

@@ -6,6 +6,9 @@ describe('Instanciating the HAL interceptor', () => {
   it('Should be properly instanciated', () => {
     expect(interceptors.halInterceptor).to.exist
   })
+  it('Should be properly instanciated', () => {
+    expect(interceptors.halDefaultInterceptor).to.exist
+  })
 })
 
 describe('Selecting requests to intercept', () => {
@@ -145,6 +148,9 @@ describe('Instanciating the Siren interceptor', () => {
   it('Should be properly instanciated', () => {
     expect(interceptors.sirenInterceptor).to.exist
   })
+  it('Should be properly instanciated', () => {
+    expect(interceptors.sirenDefaultInterceptor).to.exist
+  })
 })
 
 describe('Selecting requests to intercept (siren)', () => {
@@ -270,6 +276,17 @@ describe('Intercepting the response', () => {
     it('Should have isInterceptable and intercept properties', () => {
       expect(interceptors.setupSirenInterceptor(req, res)).to.have.property('isInterceptable')
       expect(interceptors.setupSirenInterceptor(req, res)).to.have.property('intercept')
+    })
+  })
+
+  // ================================
+  // Generic interceptor function test
+  // ================================
+
+  describe('When specifying a media type as default', () => {
+    it('Should return true', () => {
+      expect(interceptors.setupHalDefaultInterceptor(req, res).isInterceptable()).to.be.true
+      expect(interceptors.setupSirenDefaultInterceptor(req, res).isInterceptable()).to.be.true
     })
   })
 })
