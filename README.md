@@ -27,7 +27,6 @@ Example :
 // state_transitions.js 
 //
 
-const transitions = require('hypermedia-transitions')
 const list_transitions = [
   {
     rel: "resource_list", 
@@ -55,11 +54,7 @@ const list_transitions = [
   }
 ]
 
-exports.addAllMyTransitions = function () { 
-  for (let tr of list_transitions) {
-    transitions.addTransition(tr)
-  }
-}
+exports.listTr = { list_transitions }
 
 //
 // app.js
@@ -67,13 +62,13 @@ exports.addAllMyTransitions = function () {
 
 const express = require('express')
 const transitions = require('hypermedia-transitions')
-const setupTr = require('./state_transitions')
+const listTr  = require('./state_transitions').listTr
 
 var app = express()
 
 // add the middleware that need to be set early 
 
-setupTr.addAllMyTransitions()
+transitions.addTransitionList(listTr)
 
 app.use(transitions.halInterceptor)
 
@@ -81,7 +76,31 @@ app.use(transitions.halInterceptor)
 
 ```
 
+## Use as HAPI plugin
 
+```javascript
+
+const hypermediaOptions = {
+  mediaTypes: ['hal', 'siren'],
+  transitions: require('../list_transitions.json')
+}
+
+server.register([{
+    register: require('../hypermedia-transitions').hapiRegister,
+    options: hypermediaOptions
+  }, {
+// ...
+}
+], function (err) {
+    if (err) { return console.log(err); }
+
+    server.route(require('./routes'));
+
+    server.start(function () {
+      console.log('API up and running at:', server.info.uri);
+    });
+});
+``` 
 
 ## Data structure 
 
