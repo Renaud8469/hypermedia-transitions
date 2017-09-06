@@ -66,5 +66,5 @@ module.exports = {
   sirenIntercept,
   setupSirenInterceptor,
   halInterceptor,
-  sirenInterceptor,
+  sirenInterceptor
 }

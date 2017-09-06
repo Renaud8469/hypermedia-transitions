@@ -4,6 +4,7 @@ const stateHandler = require('./state')
 
 module.exports = {
   addTransition: transitions.addTransition,
+  addTransitionList: transitions.addTransitionList,
   getTransitionList: transitions.getTransitionList,
   getAvailableTransitions: transitions.getAvailableTransitions,
   clearTransitionList: transitions.clearTransitionList,
