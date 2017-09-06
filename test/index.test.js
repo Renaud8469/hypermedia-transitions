@@ -12,12 +12,6 @@ describe('Check if all functions are here', () => {
   it('Should contain halInterceptor', () => {
     expect(transition_module.halInterceptor).to.exist
   })
-  it('Should contain halDefaultInterceptor', () => {
-    expect(transition_module.halDefaultInterceptor).to.exist
-  })
-  it('Should contain sirenDefaultInterceptor', () => {
-    expect(transition_module.sirenDefaultInterceptor).to.exist
-  })
   it('Should contain sirenInterceptor', () => {
     expect(transition_module.sirenInterceptor).to.exist
   })

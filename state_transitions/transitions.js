@@ -20,6 +20,13 @@ function addTransition (transition) {
   transitionList.push(transition)
 }
 
+// Add a whole list
+function addTransitionList (trList) {
+  for (let tr of trList) {
+    addTransition(tr)
+  }
+}
+
 function getTransitionList () { return transitionList }
 
 function isActionable (state, isAuth) {
@@ -47,6 +54,7 @@ function clearTransitionList () {
 
 module.exports = {
   addTransition,
+  addTransitionList,
   getTransitionList,
   getAvailableTransitions,
   clearTransitionList

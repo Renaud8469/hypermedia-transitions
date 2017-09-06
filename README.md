@@ -11,6 +11,97 @@ This module consists of :
 - a fixed data structure to store your API state transitions (more details in the next section)
 - parsers for many different hypermedia-compliant media types exploiting this data structure to build the response. 
 
+## Use as Express middleware
+
+In your Express file, you need to add a couple lines : 
+- setup all your state transitions using the "addTransition" function 
+- register the interceptor in your middlewares. 
+
+All set ! If no header is specified, your API responses won't change. But if a client requires a particular format using the "Accept" header, and if you chose to support it, he will receive it in the response ! 
+
+Example : 
+
+```javascript
+
+//
+// state_transitions.js 
+//
+
+const list_transitions = [
+  {
+    rel: "resource_list", 
+    target: "resource list",
+    accessibleFrom: [{ state: "home" }],
+    href: "/resources",
+    method: "get"
+  },
+  {
+    rel: "resource", 
+    target: "resource",
+    accessibleFrom: [{ state: "resource list" }],
+    href: "/resources/{id}",
+    isUrlTemplate: true,
+    method: "get"
+  },
+  {
+    rel: "resource_delete", 
+    target: "resource",
+    accessibleFrom: [{ state: "resource list" }],
+    href: "/resources/{id}",
+    isUrlTemplate: true,
+    method: "delete",
+    authRequired: true
+  }
+]
+
+exports.listTr = { list_transitions }
+
+//
+// app.js
+//
+
+const express = require('express')
+const transitions = require('hypermedia-transitions')
+const listTr  = require('./state_transitions').listTr
+
+var app = express()
+
+// add the middleware that need to be set early 
+
+transitions.addTransitionList(listTr)
+
+app.use(transitions.halInterceptor)
+
+// define your routes, your error handlers, and start your server. 
+
+```
+
+## Use as HAPI plugin
+
+```javascript
+
+const hypermediaOptions = {
+  mediaTypes: ['hal', 'siren'],
+  transitions: require('../list_transitions.json')
+}
+
+server.register([{
+    register: require('../hypermedia-transitions').hapiRegister,
+    options: hypermediaOptions
+  }, {
+// ...
+}
+], function (err) {
+    if (err) { return console.log(err); }
+
+    server.route(require('./routes'));
+
+    server.start(function () {
+      console.log('API up and running at:', server.info.uri);
+    });
+});
+``` 
+
 ## Data structure 
 
 The state transitions you define should be objects defining the following properties : 
@@ -145,76 +236,6 @@ Your state names will most of the times consist in resources names. For naming c
 }
 ```
 
-
-## Use as Express middleware
-
-In your Express file, you need to add a couple lines : 
-- setup all your state transitions using the "addTransition" function 
-- register the interceptor in your middlewares. 
-
-All set ! If no header is specified, your API responses won't change. But if a client requires a particular format using the "Accept" header, and if you chose to support it, he will receive it in the response ! 
-
-Example : 
-
-```javascript
-
-//
-// state_transitions.js 
-//
-
-const transitions = require('hypermedia-transitions')
-const list_transitions = [
-  {
-    rel: "resource_list", 
-    target: "resource list",
-    accessibleFrom: [{ state: "home" }],
-    href: "/resources",
-    method: "get"
-  },
-  {
-    rel: "resource", 
-    target: "resource",
-    accessibleFrom: [{ state: "resource list" }],
-    href: "/resources/{id}",
-    isUrlTemplate: true,
-    method: "get"
-  },
-  {
-    rel: "resource_delete", 
-    target: "resource",
-    accessibleFrom: [{ state: "resource list" }],
-    href: "/resources/{id}",
-    isUrlTemplate: true,
-    method: "delete",
-    authRequired: true
-  }
-]
-
-exports.addAllMyTransitions = function () { 
-  for (let tr of list_transitions) {
-    transitions.addTransition(tr)
-  }
-}
-
-//
-// app.js
-//
-
-const express = require('express')
-const transitions = require('hypermedia-transitions')
-const setupTr = require('./state_transitions')
-
-var app = express()
-
-// add the middleware that need to be set early 
-
-setupTr.addAllMyTransitions()
-
-app.use(transitions.halInterceptor)
-
-// define your routes, your error handlers, and start your server. 
-
-```
 
 ## Authentication
 

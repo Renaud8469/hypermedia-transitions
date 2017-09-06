@@ -6,8 +6,6 @@ module.exports = {
   addTransition: transitions.addTransition,
   getTransitionList: transitions.getTransitionList,
   halInterceptor: expressInterceptors.halInterceptor,
-  halDefaultInterceptor: expressInterceptors.halDefaultInterceptor,
   sirenInterceptor: expressInterceptors.sirenInterceptor,
-  sirenDefaultInterceptor: expressInterceptors.sirenDefaultInterceptor,
   hapiRegister: hapiInterceptors.register
 }
