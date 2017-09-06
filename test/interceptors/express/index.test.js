@@ -232,10 +232,7 @@ describe('Intercepting the response', () => {
     })
 
     it('Should return an empty Siren object', () => {
-      expect(resultStorage.sentJson).to.deep.equal({
-        class: ["undefined"],
-        properties: {}
-      })
+      expect(resultStorage.sentJson).to.deep.equal({})
     })
   })
 

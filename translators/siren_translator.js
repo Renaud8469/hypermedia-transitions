@@ -1,18 +1,18 @@
 const transitions = require('../state_transitions')
+const _ = require('lodash')
 
 /*
  * Generates a Siren "entity". Useful for both resources,
  * sub-resources and collection members.
  */
 function generateSirenEntity (resource, name, host, state, isAuth, subEntityRel) {
-  let entity = {
-    class: [name]
-  }
+  let entity = {}
+  if (name !== 'undefined') entity.class = [name]
   if (subEntityRel) {
     entity.rel = [subEntityRel]
   }
 
-  entity.properties = resource
+  if (!_.isEmpty(resource)) entity.properties = resource
 
   let possibleTransitions = transitions.getAvailableTransitions(state, isAuth)
   let controls = getActionsAndLinks(possibleTransitions, resource, state, host, subEntityRel, isAuth)
@@ -50,7 +50,7 @@ function getActionsAndLinks (possibleTr, data, state, host, isSubEntity, isAuth)
   let actions = []
   let links = []
   for (let tr of possibleTr) {
-    if (transitions.isForEachItem(tr, state) || !isSubEntity) {
+    if ((transitions.isForEachItem(tr, state) && isSubEntity) || (!transitions.isForEachItem(tr, state) && !isSubEntity)) {
       let action = {}
       action.href = host + transitions.getUrl(tr, state, data).href
 
@@ -76,6 +76,7 @@ function translate (data, state, host, isAuth) {
   let sirenResponse = {}
 
   if (data instanceof Array) {
+    sirenResponse = generateSirenEntity({}, resourceName, host, state, isAuth)
     sirenResponse.entities = []
     for (let elem of data) {
       sirenResponse.entities.push(generateSirenEntity(elem, resourceName, host, state, isAuth, resourceName))
