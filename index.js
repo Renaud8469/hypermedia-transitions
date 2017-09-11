@@ -4,6 +4,7 @@ const hapiInterceptors = require('./interceptors/hapi')
 
 module.exports = {
   addTransition: transitions.addTransition,
+  addTransitionList: transitions.addTransitionList,
   getTransitionList: transitions.getTransitionList,
   halInterceptor: expressInterceptors.halInterceptor,
   sirenInterceptor: expressInterceptors.sirenInterceptor,
