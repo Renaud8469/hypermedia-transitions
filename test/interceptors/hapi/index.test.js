@@ -137,6 +137,13 @@ describe('Modify function', () => {
     })
   })
 
+  describe('When called with wrong request', () => {
+    it('Should continue', () => {
+      hapi_plugin.modify('hal')({headers: headers2}, replyTest)
+      expect(results.continueCalled).to.be.true
+    })
+  })
+
   describe('when called with right header', () => {
     it('Should return a minimal Hal response', () => {
       requestTest.headers = headers2

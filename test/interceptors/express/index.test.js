@@ -55,6 +55,22 @@ describe('Intercepting the response', () => {
     get: function (str) {
       if (str === 'Accept') {
         return 'application/vnd.hal+json'
+      } else if (str === 'host') {
+        return 'example.org'
+      } else {
+        return 'Something else'
+      }
+    }
+  }
+  let req_no_host = {
+    originalUrl: '/resource',
+    method: 'GET',
+    protocol: 'http',
+    get: function (str) {
+      if (str === 'Accept') {
+        return 'application/vnd.hal+json'
+      } else if (str === 'host') {
+        return 'example.org'
       } else {
         return 'Something else'
       }
@@ -90,6 +106,22 @@ describe('Intercepting the response', () => {
       expect(resultStorage.sentJson).to.deep.equal({ _links: {} })
     })
   })
+
+  describe('Sending an empty object body with no hostname', () => {
+    before(() => {
+      interceptors.halIntercept(req_no_host, res)("{}", send)
+    })
+
+    it('Should return the right content-type', () => {
+      expect(resultStorage.headerType).to.equal('Content-type')
+      expect(resultStorage.headerValue).to.equal('application/vnd.hal+json')
+    })
+
+    it('Should return an empty HAL object', () => {
+      expect(resultStorage.sentJson).to.deep.equal({ _links: {} })
+    })
+  })
+
 
   describe('Sending an empty array', () => {
     before(() => {
